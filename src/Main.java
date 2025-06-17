@@ -3,7 +3,7 @@ package src;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import src.view.GamePanel;
+import src.view.MainMenuView;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,7 +12,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Road to the future");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(new GamePanel());
+            frame.setContentPane(new MainMenuView(frame)); // memanggil MainMenuView diawal
             frame.pack();
             frame.setResizable(false);
             frame.setLocationRelativeTo(null);
