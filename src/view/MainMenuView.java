@@ -32,9 +32,10 @@ public class MainMenuView extends JPanel {
         // Panel atas: input username
         JPanel topPanel = new JPanel();                                                     // inisiasi Jpanel untuk "div" atas
         topPanel.add(new JLabel("Username:"));                                          // inisiasi JLabel untuk label "Username"
-        usernameField = new JTextField(100);                                         // inisiasi JTextField untuk input username dengan panjang 15 karakter
+        usernameField = new JTextField(15);                                         // inisiasi JTextField untuk input username dengan panjang 15 karakter
         topPanel.add(usernameField);                                                         // menambahkan JTextField ke panel atas
         add(topPanel, BorderLayout.NORTH);                                                      // menambahkan panel atas ke bagian utara dari layout BorderLayout
+        usernameField.addActionListener(e -> presenter.onStartClicked(getUsername()));          // ketika enter ditekan pada JTextField, panggil metode onStartClicked pada presenter dengan username yang dimasukkan
 
         // Panel tengah: tabel skor
         scoreTable = new JTable();                                                               // inisiasi JTable untuk menampilkan skor
@@ -68,8 +69,10 @@ public class MainMenuView extends JPanel {
     }
 
     // Ganti tampilan ke game
-    public void switchToGame() {
-        parentFrame.setContentPane(new GameView(parentFrame, getUsername()));                   // ganti konten dari parentFrame dengan GameView, mengirimkan parentFrame dan username yang dimasukkan
+    public void switchToGame(String username) {
+        parentFrame.setContentPane(new GameView(parentFrame, username));                   // ganti konten dari parentFrame dengan GameView, mengirimkan parentFrame dan username yang dimasukkan
+        parentFrame.setSize(800, 600); // atur ukuran frame
+        parentFrame.setLocationRelativeTo(null);
         parentFrame.revalidate();
         parentFrame.repaint();
     }

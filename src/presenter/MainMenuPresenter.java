@@ -35,6 +35,6 @@ public class MainMenuPresenter {
         if (user == null) {
             userModel.insertUser(new UserScore(username, 0, 0));
         }
-        view.switchToGame();
+        view.switchToGame(username);
     }
 }
