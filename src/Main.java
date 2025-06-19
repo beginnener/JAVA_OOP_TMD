@@ -13,6 +13,7 @@ public class Main {
             JFrame frame = new JFrame("Road to the future");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setContentPane(new MainMenuView(frame)); // memanggil MainMenuView diawal
+            // frame.setSize(800, 600); // ukuran awal frame
             frame.pack();
             frame.setResizable(false);
             frame.setLocationRelativeTo(null);
