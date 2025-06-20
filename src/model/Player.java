@@ -6,6 +6,9 @@ public class Player {
     private int x, y;                           // posisi player
     private int width, height;        // ukuran player
     private Image image;                        // gambar player
+    private boolean walking = false;
+    private int walkFrame = 0;
+    private int walkFrameCounter = 0;
 
     public Player(int startX, int startY, int width, int height, Image image) {
         this.x = startX;
@@ -25,6 +28,21 @@ public class Player {
     public int getHeight() { return height; }
 
     public Image getImage() { return image; }
+
+    public boolean isWalking() { return walking; }
+    public void setWalking(boolean walking) { this.walking = walking; }
+    public int getWalkFrame() { return walkFrame; }
+    public void updateWalkFrame() {
+        walkFrameCounter++;
+        if (walkFrameCounter >= 5) { // ganti frame setiap 5 timer tick
+            walkFrame = (walkFrame + 1) % 2;
+            walkFrameCounter = 0;
+        }
+    }
+    public void resetWalkFrame() {
+        walkFrame = 0;
+        walkFrameCounter = 0;
+    }
 
     // metode untuk menggerakan (update) posisi player
     public void move(int dx, int dy) {

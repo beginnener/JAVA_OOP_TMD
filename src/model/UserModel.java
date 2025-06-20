@@ -83,4 +83,13 @@ public class UserModel {
             e.printStackTrace();
         }
     }
+
+    public void insertOrUpdateUser(UserScore user) {
+        UserScore existing = getUser(user.getUsername());                                                   // cek apakah user sudah ada di database
+        if (existing == null) {                                                                              // jika belum ada, insert user baru
+            insertUser(user);
+        } else {                                                                                             // jika sudah ada, update data user
+            updateUser(user);
+        }
+    }
 }
