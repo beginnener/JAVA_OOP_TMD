@@ -2,12 +2,18 @@ package src.model;
 
 import java.sql.*;
 
+/*
+ * DBConnection.java
+ * Kelas ini bertugas untuk mengelola koneksi ke database MySQL
+ * Kelas ini menyediakan metode untuk eksekusi query update dan mengambil prepared statement
+ * Kelas ini juga membuat tabel 'thasil' jika belum ada
+ */
 public class DBConnection {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/db_tmd";
-    private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/db_tmd";                  // inisiasi url database
+    private static final String USER = "root";                                                  // inisiasi username database
+    private static final String PASS = "";                                                      // inisiasi password database, kosongkan jika tidak ada password                                    
 
-    private static Connection connection;
+    private static Connection connection;                                                       // buat variabel connection untuk menyimpan koneksi dari database       
 
     // Static block untuk inisialisasi satu kali
     static {

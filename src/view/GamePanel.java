@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -24,24 +25,27 @@ import src.presenter.GamePresenter;
 */
 
 public class GamePanel extends JPanel {
-    private GamePresenter presenter;
-    private boolean paused = false; // Tambahkan variabel untuk status pause
+    private GamePresenter presenter;                                                // Presenter yang mengelola logika permainan
+    private Image[] playerWalkImages = new Image[2];                                // Array untuk menyimpan gambar animasi berjalan player
+    private Image playerIdleImage;                                                  // Gambar idle player (tidak bergerak)       
+    private Image backgroundImage;                                                  // Gambar background permainan    
+    private Image keranjangImg;                                                     // Gambar keranjang untuk menampung bola
+    private Image bolaImg;                                                          // Gambar bola yang dilempar
 
-    private Image[] playerWalkImages = new Image[2];
-    private Image playerIdleImage;
-    private Image backgroundImage;
-    private Image keranjangImg;
-
+    // Konstruktor GamePanel
     public GamePanel() {
-        addKeyListener(new KeyAdapter() { // Tambahkan key listener ke GamePanel
+        addKeyListener(new KeyAdapter() {                                           // Tambahkan key listener ke GamePanel
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_SPACE:
-                        presenter.quitGame(); // Kembali ke menu utama saat tombol SPACE ditekan
+                        presenter.quitGame();                                       // Kembali ke menu utama saat tombol SPACE ditekan
                         break;
                     case KeyEvent.VK_ESCAPE:
-                        presenter.quitGame(); // Kembali ke menu utama saat tombol ESC ditekan
+                        presenter.quitGame();                                       // Kembali ke menu utama saat tombol ESC ditekan
+                        break;
+                    case KeyEvent.VK_P:
+                        presenter.pauseGame();                                      // Pause game saat tombol P ditekan
                         break;
                     default:
                         presenter.handleKeyPress(e.getKeyCode());
@@ -51,57 +55,44 @@ public class GamePanel extends JPanel {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                // Jika tombol arah dilepas, set walking ke false
                 if (e.getKeyCode() == KeyEvent.VK_UP ||
                     e.getKeyCode() == KeyEvent.VK_DOWN ||
                     e.getKeyCode() == KeyEvent.VK_LEFT ||
                     e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    presenter.setPlayerWalking(false); // Set walking ke false saat tombol arah dilepas
+                    presenter.setPlayerWalking(false);                      // Set walking ke false saat tombol arah dilepas
                 }
             }
         });
-        addMouseListener(new MouseAdapter() { // tambahkan mouse listener ke GamePanel
+        addMouseListener(new MouseAdapter() {                                       // tambahkan mouse listener ke GamePanel
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Tangani klik mouse: lempar lasso ke titik klik
-                presenter.throwLasso(e.getX(), e.getY());
-                // System.out.println("Mouse clicked at: " + e.getX() + ", " + e.getY());
+                presenter.throwLasso(e.getX(), e.getY());                           // Tangani klik mouse: lempar lasso ke titik klik
             }
         });
 
-        // Load gambar sekali saja
+        // Load gambar sekali saja untuk rendering
         playerWalkImages[0] = new ImageIcon("assets/player-walking/player-walking 1.png").getImage();
         playerWalkImages[1] = new ImageIcon("assets/player-walking/player-walking 2.png").getImage();
         playerIdleImage = new ImageIcon("assets/player-idle.png").getImage();
         backgroundImage = new ImageIcon("assets/Bg.png").getImage();
         keranjangImg = new ImageIcon("assets/keranjang.png").getImage();
+        bolaImg = new ImageIcon("assets/soulball.png").getImage();
     }
 
-    public void setPresenter(GamePresenter presenter) {
-        this.presenter = presenter;
-    }
-    public GamePresenter getPresenter() {
-        return presenter;
-    }
-    public void setPaused(boolean paused) {
-        this.paused = paused;
-        repaint(); // Memperbarui tampilan saat status pause berubah
-    }
-    public boolean isPaused() {
-        return paused;
-    }
-
+    
     @Override
+
+    // metode utama untuk merender seluruh tampilan game
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         if (presenter != null) {
-            // Gambar background, player, bola, lasso, skor
             drawBackground(g);
             drawGameObjects(g);
         }
     }
-
+    
+    // metode untuk menggambar background
     private void drawBackground(Graphics g) {
         if (backgroundImage != null) {
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
@@ -110,25 +101,57 @@ public class GamePanel extends JPanel {
             g.fillRect(0, 0, getWidth(), getHeight());
         }
     }
-
-    // Metode untuk menggambar objek game; hanya menggambar objek karakter, bola, dan lasso
+    
+    // satukan seluruh Metode untuk menggambar objek game; hanya menggambar objek karakter, bola, lasso, dan keranjang
     private void drawGameObjects(Graphics g) {
-        // Gambar player
+        renderPlayer(g);
+        renderBalls(g);
+        renderLassso(g);
+        renderKeranjang(g);
+    }
+    
+    // Metode untuk menggambar player
+    private void renderPlayer(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        
         Rectangle playerRect = presenter.getPlayerRectangle();
         Image playerImage;
+
+        // Ambil gambar tergantung status
         if (presenter.isPlayerWalking()) {
             int frame = presenter.getPlayerWalkFrame();
-            playerImage = playerWalkImages[frame % 2];
+            playerImage = playerWalkImages[frame % playerWalkImages.length];
         } else {
             playerImage = playerIdleImage;
         }
-        g.drawImage(playerImage, playerRect.x, playerRect.y, playerRect.width, playerRect.height, this);
+        
+        // Cek arah menghadap (butuh flag di presenter/player)
+        boolean facingLeft = presenter.isPlayerFacingLeft(); 
 
-        // Gambar bola-bola skill
+        if (facingLeft) { // Flip gambar ke kiri
+            g2d.drawImage(playerImage,
+                playerRect.x + playerRect.width, playerRect.y,
+                -playerRect.width, playerRect.height,
+                this);
+            } else { // Gambar normal}
+            g2d.drawImage(playerImage,
+            playerRect.x, playerRect.y,
+            playerRect.width, playerRect.height,
+            this);
+        }
+    }
+    
+    // Metode untuk menggambar bola
+    public void renderBalls(Graphics g) {
+        Graphics2D balls = (Graphics2D) g;
         for (GamePresenter.BallInfo info : presenter.getBallInfos()) {
-            g.setColor(Color.GREEN);
-            g.fillOval(info.x, info.y, info.width, info.height);
-
+            if (bolaImg != null) {
+                balls.drawImage(bolaImg, info.x, info.y, info.width, info.height, null);
+            } else {
+                balls.setColor(Color.GREEN);
+                balls.fillOval(info.x, info.y, info.width, info.height);
+            }
+            
             // Tampilkan scoreValue di tengah bola
             String scoreStr = String.valueOf(info.scoreValue);
             int strWidth = g.getFontMetrics().stringWidth(scoreStr);
@@ -136,17 +159,23 @@ public class GamePanel extends JPanel {
             int centerX = info.x + (info.width - strWidth) / 2;
             int centerY = info.y + (info.height + strHeight) / 2 - 3;
             g.setColor(Color.BLACK);
+            g.setFont(getFont().deriveFont(18f)); // Set font size
             g.drawString(scoreStr, centerX, centerY);
         }
-
-        // gambar lasso
+    }
+    
+    // Metode untuk menggambar lasso
+    public void renderLassso(Graphics g){
         if (presenter.isLassoActive()) {
             Point playerCenter = presenter.getPlayerCenter();
             Point lassoPoint = presenter.getLassoPoint();
+            g.setColor(Color.YELLOW);
             g.drawLine(playerCenter.x, playerCenter.y, lassoPoint.x, lassoPoint.y);
         }
+    }
 
-        // gambar keranjang
+    // Metode untuk menggambar keranjang
+    public void renderKeranjang(Graphics g){
         Rectangle keranjang = presenter.getKeranjangBound();
         if (keranjangImg != null) {
             g.drawImage(keranjangImg, keranjang.x, keranjang.y, keranjang.width, keranjang.height, this);
@@ -155,4 +184,8 @@ public class GamePanel extends JPanel {
             g.fillRect(keranjang.x, keranjang.y, keranjang.width, keranjang.height);
         }
     }
+
+    // === Getter dan Setter untuk presenter ===
+    public void setPresenter(GamePresenter presenter) { this.presenter = presenter; }
+    public GamePresenter getPresenter() { return presenter; }
 }

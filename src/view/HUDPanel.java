@@ -26,7 +26,6 @@ public class HUDPanel extends JPanel {
         g.drawString("Count: " + presenter.getCount(), 150, 25);
         g.setFont(new Font("Arial", Font.BOLD, 24));
         g.setColor(Color.RED);
-        g.drawString("Time: " + presenter.getTimeLeft() + "s", 600, 30); // posisi bisa disesuaikan
-        // Tambahkan elemen lain seperti timer jika perlu
+        g.drawString("Time: " + presenter.getTimeLeft() + "s", 600, 30);
     }
 }

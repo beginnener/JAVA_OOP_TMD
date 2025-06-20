@@ -30,32 +30,32 @@ public class MainMenuView extends JPanel {
         setLayout(new BorderLayout());
 
         // Panel atas: input username
-        JPanel topPanel = new JPanel();                                                     // inisiasi Jpanel untuk "div" atas
-        topPanel.add(new JLabel("Username:"));                                          // inisiasi JLabel untuk label "Username"
-        usernameField = new JTextField(15);                                         // inisiasi JTextField untuk input username dengan panjang 15 karakter
-        topPanel.add(usernameField);                                                         // menambahkan JTextField ke panel atas
+        JPanel topPanel = new JPanel();                                                          // inisiasi Jpanel untuk "div" atas
+        topPanel.add(new JLabel("Username:"));                                              // inisiasi JLabel untuk label "Username"
+        usernameField = new JTextField(15);                                             // inisiasi JTextField untuk input username dengan panjang 15 karakter
+        topPanel.add(usernameField);                                                            // menambahkan JTextField ke panel atas
         add(topPanel, BorderLayout.NORTH);                                                      // menambahkan panel atas ke bagian utara dari layout BorderLayout
         usernameField.addActionListener(e -> presenter.onStartClicked(getUsername()));          // ketika enter ditekan pada JTextField, panggil metode onStartClicked pada presenter dengan username yang dimasukkan
 
         // Panel tengah: tabel skor
         scoreTable = new JTable();                                                               // inisiasi JTable untuk menampilkan skor
-        add(new JScrollPane(scoreTable), BorderLayout.CENTER);                                  // tambahkan JScrollPane yang membungkus JTable ke bagian tengah dari layout BorderLayout
+        add(new JScrollPane(scoreTable), BorderLayout.CENTER);                                   // tambahkan JScrollPane yang membungkus JTable ke bagian tengah dari layout BorderLayout
 
         // Panel bawah: tombol
-        JPanel bottomPanel = new JPanel();                                                      // inisiasi JPanel untuk "div" bawah
+        JPanel bottomPanel = new JPanel();                                                       // inisiasi JPanel untuk "div" bawah
         startButton = new JButton("Start Game");                                            // inisiasi JButton untuk tombol "Start Game"
         quitButton = new JButton("Quit");                                                   // inisiasi JButton untuk tombol "Quit"                                
 
-        bottomPanel.add(startButton);                                                           // menambahkan tombol "Start Game" ke panel bawah
-        bottomPanel.add(quitButton);                                                            // menambahkan tombol "Quit" ke panel bawah        
+        bottomPanel.add(startButton);                                                            // menambahkan tombol "Start Game" ke panel bawah
+        bottomPanel.add(quitButton);                                                             // menambahkan tombol "Quit" ke panel bawah        
         add(bottomPanel, BorderLayout.SOUTH);
 
         // Event listener
-        startButton.addActionListener(e -> presenter.onStartClicked(getUsername()));            // ketika tombol "Start Game" diklik, panggil metode onStartClicked pada presenter dengan username yang dimasukkan
-        quitButton.addActionListener(e -> System.exit(0));                              // ketika tombol "Quit" diklik, keluar dari aplikasi
+        startButton.addActionListener(e -> presenter.onStartClicked(getUsername()));             // ketika tombol "Start Game" diklik, panggil metode onStartClicked pada presenter dengan username yang dimasukkan
+        quitButton.addActionListener(e -> System.exit(0));                                // ketika tombol "Quit" diklik, keluar dari aplikasi
 
         // Load data dari database
-        presenter.loadTable();                                                                  // memanggil metode loadTable pada presenter untuk memuat data skor dari database
+        presenter.loadTable();                                                                   // memanggil metode loadTable pada presenter untuk memuat data skor dari database
     }
 
     // Metode untuk mendapatkan username dari input field
@@ -65,12 +65,12 @@ public class MainMenuView extends JPanel {
 
     // Metode untuk mengatur model tabel skor
     public void setTableModel(TableModel model) {
-        scoreTable.setModel(model);                                                             // gunakan kelas dari Jtabel untuk mengisi table skor dengan model yang diberikan
+        scoreTable.setModel(model);                                                              // gunakan kelas dari Jtabel untuk mengisi table skor dengan model yang diberikan
     }
 
     // Ganti tampilan ke game
     public void switchToGame(String username) {
-        parentFrame.setContentPane(new GameView(parentFrame, username));                   // ganti konten dari parentFrame dengan GameView, mengirimkan parentFrame dan username yang dimasukkan
+        parentFrame.setContentPane(new GameView(parentFrame, username));                        // ganti konten dari parentFrame dengan GameView, mengirimkan parentFrame dan username yang dimasukkan
         parentFrame.setSize(800, 600); // atur ukuran frame
         parentFrame.setLocationRelativeTo(null);
         parentFrame.revalidate();

@@ -5,29 +5,36 @@ import java.awt.Rectangle;
 import java.util.Random;
 
 public class SkillBall {
-    private int x, y;
-    private int width, height;
-    private String label;
-    private int speed;
-    private int scoreValue;
-    private Image image;
-    private boolean movingLeft;  // arah gerak bola
-    public boolean delivered = false; // status bola sedang ke keranjang atau tidak 
+    // atribut dasar
+    private int x, y;                                                                       // posisi bola       
+    private int width, height;                                                              // ukuran bola (width dan height) 
+    
+    // atribut tambahan
+    private String label;                                                                   // label bola (nama bola)       
+    private int speed;                                                                      // kecepatan bola  
+    private int scoreValue;                                                                 // nilai score bola (scoreValue) untuk menentukan seberapa banyak poin yang didapatkan pemain ketika bola ini diambil
+    private Image image;                                                                    // gambar bola
+    
+    // status bola
+    private boolean movingLeft;                                                             // status arah gerak bola
+    public boolean delivered = false;                                                       // status bola sedang ke keranjang atau tidak 
 
     // konstruktor
     public SkillBall(String label, Image image, int scoreValue) {
-        // y akan diacak antara 20~40 atau 450~480
         Random rand = new Random();
-        if (rand.nextBoolean()) { this.y = rand.nextInt(5) * 5 + 20; } 
-        else { this.y = rand.nextInt(7) * 5 + 450; }
+        if (rand.nextBoolean()) { 
+            this.y = rand.nextInt(5) * 5 + 20;
+            this.movingLeft = false; 
+        } else {
+            this.y = rand.nextInt(7) * 5 + 450; 
+            this.movingLeft = true;
+        }
         this.width = 40 + (scoreValue / 2);
         this.height = 40 + (scoreValue / 2);
         this.label = label;
         this.image = image;
         this.scoreValue = scoreValue;
         
-        if(y >= 20 && y <= 40) this.movingLeft = false; // jika bola muncul di atas, arah gerak bola ke kanan
-        else this.movingLeft = true; // jika bola muncul di bawah, arah gerak bola ke kiri
         this.speed = new Random().nextInt(3) + 2;  // kecepatan acak
 
         if (movingLeft) { this.x = 800; } // muncul dari kanan layar 

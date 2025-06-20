@@ -12,6 +12,7 @@ import java.io.IOException;
 public class MusicPlayer {
     private Clip clip;
 
+    // method untuk memutar musik
     public void play(String filePath, boolean loop) {
         try {
             File file = new File(filePath);
@@ -31,6 +32,7 @@ public class MusicPlayer {
         }
     }
 
+    // method untuk memberhentikan musik
     public void stop() {
         if (clip != null && clip.isRunning()) {
             clip.stop();
@@ -38,12 +40,14 @@ public class MusicPlayer {
         }
     }
 
+    // method untuk menjeda musik
     public void pause() {
         if (clip != null && clip.isRunning()) {
             clip.stop();
         }
     }
 
+    // method untuk melanjutkan musik yang dijeda
     public void resume() {
         if (clip != null && !clip.isRunning()) {
             clip.start();
