@@ -60,7 +60,7 @@ public class Lasso {
         this.grabbedBall = null;
     }
 
-    // method untuk mengembalikan lasso ke player (returning)
+    // method untuk throwing lasso dan returning lasso
     public void update() {
         if (throwing) {                                                                     // jika status lasso sedang dilempar
             // Bergerak menuju target                   
