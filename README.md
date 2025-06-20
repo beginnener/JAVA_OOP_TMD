@@ -18,33 +18,34 @@ _Saya Natasha Adinda Cantika dengan NIM 2312120 mengerjakan TMD dalam mata kulia
 │
 ├── src/
 │   ├── model/                 
-│   │   ├── DBConnection.java       ← Berisi koneksi + pembuatan tabel thasil
-│   │   ├── UserScore.java          
-│   │   ├── UserModel.java          
-│   │   ├── Player.java             
-│   │   ├── SkillBall.java          
-│   │   └── Lasso.java              
+│   │   ├── DBConnection.java           ← Menyediakan koneksi ke database dan membuat tabel jika belum ada
+│   │   ├── UserScore.java              ← Kelas data (POJO) yang merepresentasikan entitas user dan skornya
+│   │   ├── UserModel.java              ← Akses data (DAO) untuk operasi CRUD terhadap tabel user; berinteraksi dengan database
+│   │   ├── Player.java                 ← Representasi objek pemain dalam game (posisi, gambar, dll)
+│   │   ├── SkillBall.java              ← Representasi objek bola skill; tidak disimpan di database
+│   │   └── Lasso.java                  ← Representasi tali lasso
 │   │
-│   ├── view/                      
-│   │   ├── MainMenuView.java       
-│   │   ├── GameView.java           
-│   │   └── GameCanvas.java         
+│   ├── view/
+│   │   ├── MainMenuView.java           ← Menampilkan tampilan awal game (menu, input nama, tabel skor)
+│   │   ├── GameView.java               ← Jendela utama (JFrame) yang menampung GamePanel dan mengatur layout
+│   │   ├── HUDPanel.java               ← Jpanel tempat skor, count, dan time remaining dibuat
+│   │   └── GamePanel.java              ← Komponen utama untuk merender game, menerima input keyboard, dan menangani animasi
 │   │
-│   ├── presenter/                 
-│   │   ├── MainMenuPresenter.java  
-│   │   └── GamePresenter.java      
+│   ├── presenter/
+│   │   ├── KontrakGamePresenter.java 
+│   │   ├── MainMenuPresenter.java      ← Menangani logika input di menu awal dan interaksi dengan UserModel
+│   │   └── GamePresenter.java          ← Menangani logika gameplay (pergerakan, skor, interaksi dengan objek game)
 │   │
-│   └── Main.java                  
+│   └── Main.java                       ← Entry point program, menginisialisasi dan menjalankan tampilan utama
 │
-├── lib/                          ← Berisi MySQL JDBC driver jika diperlukan
+├── lib/                                ← Folder untuk menyimpan MySQL JDBC Driver (e.g., mysql-connector.jar)
 │
-├── assets/                       ← Berisi gambar karakter, bola, background, dll
-│   ├── player.png
-│   ├── ball1.png
-│   └── ...
+├── assets/                             ← Berisi gambar karakter, bola, background, dll
 │
 └── README.md
 ```
+Jika divisualisasikan akan terlihat sebagai berikut:
+![alt text](image-1.png)
 
 ## Cara Kerja Program
 terdapat beberapa jenis bola kekuatan yang bisa diambil
